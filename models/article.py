@@ -15,3 +15,18 @@ class Article(db.Model):
     __table_args__ = (
         db.UniqueConstraint('source_id', 'guid', name='uc_source_guid'),
     )
+
+    @classmethod
+    def insert_from_feed(cls, source_id, feed_articles):
+        stmt = Article.__table__.insert().prefix_with('IGNORE')
+        articles = []
+        for article in feed_articles:
+            articles.append({
+                'title': article['title'],
+                'body': article['summary'],
+                'link': article['link'],
+                'guid': article['id'],
+                'source_id': source_id,
+                'date_published': article['published'],
+            })
+        db.engine.execute(stmt, articles)
