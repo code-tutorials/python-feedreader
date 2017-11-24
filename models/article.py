@@ -9,7 +9,7 @@ class Article(db.Model):
     guid = db.Column(db.String(255), nullable=False)
     unread = db.Column(db.Boolean, default=True, nullable=False)
     source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable=False)
-    source = db.relationship('Source', db.backref('articles', lazy=True))
+    source = db.relationship('Source', backref=db.backref('articles', lazy=True))
     date_added = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     date_published = db.Column(db.DateTime)
     __table_args__ = (
