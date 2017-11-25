@@ -1,4 +1,4 @@
-from flask import abort, redirect, request
+from flask import abort, redirect, request, render_template
 from app import app
 from db import db
 from models.article import Article
@@ -11,7 +11,7 @@ def index_get():
     query = query.filter(Article.unread == True)
     query = query.order_by(Article.date_added.desc())
     articles = query.all()
-    return str([article.title for article in articles])
+    return render_template('index.html', articles=articles)
 
 @app.route('/read/<int:article_id>', methods=['GET'])
 def read_article_get(article_id):
@@ -25,7 +25,7 @@ def sources_get():
     query = Source.query
     query = query.order_by(Source.title)
     sources = query.all()
-    return str([source.title for source in sources])
+    return render_template('sources.html', sources=sources)
 
 @app.route('/sources', methods=['POST'])
 def sources_post():

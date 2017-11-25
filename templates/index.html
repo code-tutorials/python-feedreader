@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Latest News</title>
+    </head>
+    <body>
+        <main>
+            <h1>Latest News</h1>
+            {% for article in articles %}
+            <article>
+                <h1>
+                    <a href="/read/{{ article.id }}">{{ article.title }}</a>
+                </h1>
+                <div class="source">
+                    From
+                    <a href="{{ article.source.link }}">
+                        {{ article.source.title }}
+                    </a>
+                </div>
+                <div class="added">
+                    {{ article.date_added }}
+                </div>
+                <div class="body">
+                    {{ article.body }}
+                </div>
+            </article>
+            {% endfor %}
+        </main>
+    </body>
+</html>

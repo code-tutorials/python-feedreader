@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Sources</title>
+    </head>
+    <body>
+        <form method="POST">
+            <input name="feed">
+            <button type="submit">Add feed</button>
+        </form>
+        {% for source in sources %}
+        <div>
+            <a href="{{ source.link }}">{{ source.title }}</a>
+        </div>
+        {% endfor %}
+    </body>
+</html>
