@@ -9,7 +9,15 @@ import feed
 def index_get():
     query = Article.query
     query = query.filter(Article.unread == True)
-    query = query.order_by(Article.date_added.desc())
+    orderby = request.args.get('orderby', 'added')
+    if orderby == 'added':
+        query = query.order_by(Article.date_added.desc())
+    elif orderby == 'published':
+        query = query.order_by(Article.date_published.desc())
+    elif orderby == 'title':
+        query = query.order_by(Article.title)
+    elif orderby == 'source':
+        query = query.join(Source).order_by(Source.title)
     articles = query.all()
     return render_template('index.html', articles=articles)
 
@@ -33,4 +41,6 @@ def sources_post():
     parsed = feed.parse(feed_url)
     feed_source = feed.get_source(parsed)
     source = Source.insert_from_feed(feed_url, feed_source)
+    feed_articles = feed.get_articles(parsed)
+    Article.insert_from_feed(source.id, feed_articles)
     return redirect('/sources')
